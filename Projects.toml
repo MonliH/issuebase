@@ -1,0 +1,36 @@
+[rust]
+name = "Rust"
+id = "rust"
+
+[[rust.groups]]
+id = "rust-lang"
+name = "Official Rust Organization"
+repos = []
+orgs = ["rust-lang"]
+flags = { "*" = ["good first issue"], "rust-lang" = ["E-easy"] }
+
+[[rust.groups]]
+id = "notable-projects"
+name = "Notable Rust Projects"
+repos = [
+    "seanmonstar/reqwest",
+    "tokio-rs/tokio",
+    "serde-rs/serde",
+    "rust-random/rand",
+    "dtolnay/syn",
+    "bitflags/bitflags",
+    "serenity-rs/serenity",
+    "async-rs/async-std",
+    "smol-rs/smol",
+    "hecrj/iced",
+    "denoland/deno",
+    "alacritty/alacritty",
+    "servo/servo",
+    "tauri-apps/tauri",
+    "redox-os/redox",
+    "actix/actix-web",
+    "bevyengine/bevy",
+    "hyperium/hyper"
+]
+orgs = []
+flags = { "*" = ["good first issue"] }
