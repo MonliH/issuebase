@@ -13,24 +13,27 @@ flags = { "*" = ["good first issue"], "rust-lang" = ["E-easy"] }
 id = "notable-projects"
 name = "Notable Rust Projects"
 repos = [
+    "hecrj/iced",
     "seanmonstar/reqwest",
     "tokio-rs/tokio",
     "serde-rs/serde",
     "rust-random/rand",
-    "dtolnay/syn",
     "bitflags/bitflags",
     "serenity-rs/serenity",
     "async-rs/async-std",
     "smol-rs/smol",
-    "hecrj/iced",
     "denoland/deno",
     "alacritty/alacritty",
     "servo/servo",
     "tauri-apps/tauri",
-    "redox-os/redox",
     "actix/actix-web",
     "bevyengine/bevy",
-    "hyperium/hyper"
+    "hyperium/hyper",
 ]
 orgs = []
-flags = { "*" = ["good first issue"] }
+[rust.groups.flags]
+"*" = ["good first issue"]
+"servo/servo" = ["E-easy"]
+"tokio-rs/tokio" = ["E-easy"]
+"alacritty/alacritty" = ["D - easy"]
+"actix/actix-web" = ["good-first-issue"]

@@ -1,11 +1,18 @@
 use std::borrow::Cow;
 use std::collections::HashMap;
+use std::env;
 
-use chrono::NaiveDateTime;
+use chrono::{Utc, DateTime};
 use reqwest::Client;
+use reqwest::header::{self, HeaderValue, HeaderMap};
 use rocket::http::Status;
 
 use serde::{Serialize, Deserialize};
+
+lazy_static! {
+    pub static ref GITHUB_API_KEY: String =
+        format!("token {}", env::var("GITHUB_API_KEY").expect("GITHUB_API_KEY env var is not set"));
+}
 
 const API_URL: &str = "https://api.github.com/";
 
@@ -22,8 +29,16 @@ struct GithubIssues(Vec<GithubIssue>);
 struct GithubIssue {
     html_url: String,
     title: String,
-    created_at: NaiveDateTime,
-    assignees: Option<Empty>
+    created_at: DateTime<Utc>,
+    assignee: Option<Empty>,
+    labels: Vec<GithubLabel>
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+struct GithubLabel {
+    name: String,
+    color: String,
+    description: Option<String>
 }
 
 #[derive(Deserialize, Debug)]
@@ -49,7 +64,17 @@ async fn good_issues<'a>(client: &Client, repo: &str, flags: &[Cow<'a, String>])
             .json()
             .await
             .map_err(|e| {dbg!(e); Status::InternalServerError})?;
-        println!("{:?}", res);
+        issues.extend(
+            res
+                .0
+                .into_iter()
+                .map(|i| Issue {
+                    title: i.title,
+                    url: i.html_url,
+                    date: i.created_at,
+                    labels: i.labels
+                })
+        );
     }
     Ok(Issues {
         issues,
@@ -63,18 +88,18 @@ pub async fn good_github_issues(
     orgs: &[String],
     flags: &HashMap<String, Vec<String>>,
 ) -> Result<Vec<Issues>, Status> {
-    println!("{:?} {:?}", repos, orgs);
+    let mut headers = HeaderMap::new();
+    let mut auth_value = HeaderValue::from_static(&*GITHUB_API_KEY);
+    auth_value.set_sensitive(true);
+    headers.insert(header::AUTHORIZATION, auth_value);
+
     let client = reqwest::Client::builder()
         .user_agent("devcontrib")
+        .default_headers(headers)
         .build().unwrap();
     // Allocate a single buffer used for flags in each repo
     let mut flags_buf: Vec<Cow<String>> = Vec::new();
 
-    // "*" marks a flag used in all issues in this group.
-    // Usually set to "good first issue".
-    if let Some(initial) = flags.get("*") {
-        flags_buf.extend(initial.iter().map(|s| Cow::Borrowed(s)));
-    }
 
     let mut all_repos = Vec::new();
     all_repos.extend(repos);
@@ -82,19 +107,21 @@ pub async fn good_github_issues(
     let mut all_issues = Vec::new();
 
     for repo in all_repos {
-        let flags_len = if let Some(repo_flags) = flags.get(repo) {
+        if let Some(repo_flags) = flags.get(repo) {
             flags_buf.extend(repo_flags.iter().map(|s| Cow::Borrowed(s)));
-            repo_flags.len()
         } else {
-            0
-        };
-        println!("{:?}", repo);
+            // "*" marks a flag used in all issues in this group.
+            // Usually set to "good first issue".
+            if let Some(initial) = flags.get("*") {
+                flags_buf.extend(initial.iter().map(|s| Cow::Borrowed(s)));
+            }
+        }
 
         all_issues.push(good_issues(&client, repo, &flags_buf).await?);
 
         // Resuse the allocated buffer by removing the added elements
         // this is practically free: it's just a pointer decrement
-        flags_buf.truncate(flags_buf.len().saturating_sub(flags_len))
+        flags_buf.clear()
     }
 
     Ok(all_issues)
@@ -111,6 +138,6 @@ pub struct Issues {
 pub struct Issue {
     title: String,
     url: String,
-    date: chrono::NaiveDateTime,
-    flags: Vec<String>,
+    date: chrono::DateTime<Utc>,
+    labels: Vec<GithubLabel>,
 }
