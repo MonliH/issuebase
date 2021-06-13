@@ -38,7 +38,6 @@ struct GithubIssue {
 struct GithubLabel {
     name: String,
     color: String,
-    description: Option<String>
 }
 
 #[derive(Deserialize, Debug)]
