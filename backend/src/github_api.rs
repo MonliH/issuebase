@@ -93,6 +93,10 @@ async fn good_issues<'a>(
         }));
     }
 
+    if issues.is_empty() {
+        return Ok(None);
+    }
+
     Ok(Some(Issues {
         issues,
         repo_name: repo.to_string(),
