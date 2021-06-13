@@ -1,7 +1,9 @@
 use rocket::{http::Status, serde::json::Json};
-use serde::Serialize;
 
-use crate::{github_api::{Issues, good_github_issues}, projects};
+use crate::{
+    github_api::{good_github_issues, Issues},
+    projects,
+};
 
 #[get("/issues/<language>/<category>")]
 pub async fn get_issues(language: &str, category: usize) -> Result<Json<Vec<Issues>>, Status> {

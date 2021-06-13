@@ -8,7 +8,7 @@ pub mod github_api;
 pub mod projects;
 
 use projects::{MinimalGroup, Projects};
-use rocket::{http::Status, serde::json::Json};
+use rocket::serde::json::Json;
 
 #[get("/projects")]
 fn get_projects() -> Json<&'static Projects<MinimalGroup>> {
