@@ -6,7 +6,7 @@ use dotenv::dotenv;
 use rocket::{http::Status, serde::json::Json, State};
 
 use crate::{
-    cache::{Cache, CacheEntry},
+    cache::Cache,
     github_api::{good_github_issues, Issues},
     projects,
 };
