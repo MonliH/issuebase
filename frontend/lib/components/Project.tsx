@@ -25,6 +25,7 @@ function IssueCard({ issue }: { issue: Issue }) {
                 borderColor: `#${label.color}`,
                 backgroundColor: `#${label.color}40`,
               }}
+              key={label.name}
             >
               {label.name}
             </span>
@@ -52,7 +53,7 @@ export default function Project({ info }: { info: RepoIssues }) {
       </div>
       <div className={styles.cardContainer}>
         {info.issues.map((i) => (
-          <IssueCard issue={i} />
+          <IssueCard issue={i} key={i.url}/>
         ))}
       </div>
     </div>

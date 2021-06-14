@@ -30,7 +30,14 @@ export default function Home({
       <main className={styles.mainLayout}>
         <Sidebar topics={topics} active={active} />
         <div className={styles.scrollable}>
-          <Issues issues={issues} />
+          <Issues
+            issues={issues}
+            name={
+              active
+                ? topics[active.language].groups[active.categoryIdx].name
+                : undefined
+            }
+          />
         </div>
       </main>
     </div>

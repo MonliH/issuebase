@@ -3,15 +3,15 @@ name = "Rust"
 id = "rust"
 
 [[rust.groups]]
-id = "rust-lang"
-name = "Official Rust Organization"
+id = "rust-official"
+name = "Official Rust Repositories"
 repos = []
 orgs = ["rust-lang"]
 flags = { "*" = ["good first issue"], "rust-lang" = ["E-easy"] }
 
 [[rust.groups]]
 id = "notable-projects"
-name = "Notable Rust Projects"
+name = "Notable Rust repositories"
 repos = [
     "hecrj/iced",
     "seanmonstar/reqwest",

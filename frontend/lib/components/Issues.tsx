@@ -7,13 +7,14 @@ import styles from "@styles/Issues.module.css";
 
 const AArrowLeft = a(ArrowLeft);
 
-export default function Issues({ issues }: { issues?: TopicIssues }) {
-  if (issues) {
+export default function Issues({ issues, name }: { issues?: TopicIssues, name?: string }) {
+  if (issues && name) {
     return (
       <div className={styles.container}>
         <div className={styles.margin}>
           <div className={styles.title}>Good First Issues</div>
-          {issues.map(i => <Project info={i}/>)}
+          <div className={styles.projectName}>for {name.toLowerCase()}</div>
+          {issues.map(i => <Project info={i} key={i.repo_name}/>)}
         </div>
       </div>
     );

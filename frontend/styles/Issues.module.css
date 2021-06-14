@@ -24,6 +24,7 @@
 .container {
   flex-grow: 1;
   position: relative;
+  margin-bottom: 30px;
 }
 
 .unselectedContainer {
@@ -38,4 +39,8 @@
   margin-left: 50px;
   display: flex;
   flex-direction: column;
+}
+
+.projectName {
+  margin-top: 4px;
 }
