@@ -21,11 +21,16 @@ export interface Label {
   color: string;
 }
 
-export default async function getTopicIssues(
-  language: string,
-  categoryIdx: number
-): Promise<TopicIssues> {
-  const res = await fetch(`${API_DOMAIN}/${language}/${categoryIdx}`);
+export interface ActiveTopic {
+  language: string;
+  categoryIdx: number;
+}
+
+export default async function getTopicIssues({
+  language,
+  categoryIdx,
+}: ActiveTopic): Promise<TopicIssues> {
+  const res = await fetch(`${API_DOMAIN}/issues/${language}/${categoryIdx}`);
   const issues = await res.json();
   return issues;
 }

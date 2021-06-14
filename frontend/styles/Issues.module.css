@@ -1,0 +1,34 @@
+.title {
+  font-size: 30px;
+}
+
+.centeredContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.titleSelect {
+  font-size: 25px;
+  color: inherit;
+}
+
+.arrow {
+  width: 35px;
+  color: inherit;
+  margin-bottom: -4px;
+}
+
+.container {
+  flex-grow: 1;
+  position: relative;
+}
+
+.unselectedContainer {
+  position: absolute;
+  left: 20px;
+  top: calc(10vh + 10px);
+  color: #808080;
+}

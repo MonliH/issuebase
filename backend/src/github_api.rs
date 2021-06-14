@@ -42,7 +42,7 @@ struct GithubIssue {
     labels: Vec<GithubLabel>,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Clone, Serialize, Debug)]
 struct GithubLabel {
     name: String,
     color: String,
@@ -186,7 +186,7 @@ pub async fn good_github_issues(
     Ok(all_issues)
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Issues {
     issues: Vec<Issue>,
     repo_name: String,
@@ -194,7 +194,7 @@ pub struct Issues {
     description: Option<String>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Issue {
     title: String,
     url: String,
