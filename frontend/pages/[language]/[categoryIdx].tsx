@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
   const issues = await getTopicIssues(current);
   return {
-    props: { topics, issues, current },
+    props: { topics, issues, active: current },
     revalidate: revalidateTime,
   };
 };

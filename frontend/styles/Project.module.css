@@ -1,0 +1,73 @@
+.projectContainer {
+  margin-top: 35px;
+  text-align: left;
+}
+
+.projectName {
+  font-family: var(--mono-font);
+  font-size: 20px;
+  color: #0059ff;
+  text-decoration: none;
+  border-bottom: 1px solid #0059ff;
+}
+
+.projectName:hover {
+  color: #4989ff;
+  border-bottom-color: #4989ff;
+}
+
+.starIcon {
+  margin-bottom: -5px;
+  margin-right: 5px;
+}
+
+.stars {
+  margin-top: 4px;
+}
+
+.issueCard {
+  border: 1px solid #c8c8c8;
+  border-radius: 5px;
+  height: fit-content;
+  padding: 20px;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.issueCard:hover {
+  border-color: #135cff;
+}
+
+.issueTitle {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.date {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.issueTag {
+  font-size: 14px;
+  border: 1px solid;
+  border-radius: 24px;
+  width: fit-content;
+  padding: 1px 10px;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  display: inline-block;
+}
+
+.issueTags {
+  line-height: 24px;
+}
+
+.cardContainer {
+  column-count: 3;
+  column-gap: 10px;
+  width: 80%;
+  margin-top: 15px;
+}

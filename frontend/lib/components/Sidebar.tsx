@@ -75,13 +75,20 @@ export default function Sidebar({
 }) {
   return (
     <div className={styles.container}>
-      {Object.entries(topics).map(([key, { name, id, groups }]) => {
+      {Object.values(topics).map(({ name: langDisp, id: language, groups }) => {
         return (
-          <Tree name={name} key={key}>
-            {groups.map(({ id, name }, idx) => {
+          <Tree name={langDisp} key={language}>
+            {groups.map(({ id: groupId }, idx) => {
+              let style = {};
+              if (active?.language == language && active?.categoryIdx == idx) {
+                style = { fontWeight: "bold" };
+              }
+
               return (
-                <Link href={`/${key}/${idx}`} passHref={true} key={id}>
-                  <a className={styles.treeLink}>{id}</a>
+                <Link href={`/${language}/${idx}`} passHref={true} key={groupId}>
+                  <a className={styles.treeLink} style={style}>
+                    {groupId}
+                  </a>
                 </Link>
               );
             })}

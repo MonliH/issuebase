@@ -1,11 +1,16 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .mainLayout {
   display: flex;
   flex-direction: row;
-  height: calc(100vh - 75px);
+  height: 100vh;
+}
+
+.scrollable {
+  overflow: auto;
+  flex-grow: 1;
 }

@@ -37,6 +37,7 @@
   font-size: 25px;
   border-right: 1px solid #e3e3e3;
   font-family: var(--mono-font);
+  flex-shrink: 0;
 }
 
 .treeLink {
@@ -56,12 +57,13 @@
 }
 
 .githubLink {
-  font-family: var(--serif-font);
+  font-family: var(--sans-font);
   font-size: 20px;
   font-weight: 300;
   position: absolute;
   bottom: 20px;
   right: 40px;
+  text-decoration: none;
 }
 
 .logo {

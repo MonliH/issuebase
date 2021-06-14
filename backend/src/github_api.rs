@@ -2,6 +2,7 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::env;
 use std::mem;
+use std::cmp::Reverse;
 
 use chrono::{DateTime, Utc};
 use reqwest::header::LINK;
@@ -182,6 +183,9 @@ pub async fn good_github_issues(
         // this is practically free: it's just a pointer decrement
         flags_buf.clear()
     }
+
+    // sort repos by most stars
+    all_issues.sort_by_key(|proj| Reverse(proj.stars));
 
     Ok(all_issues)
 }

@@ -12,7 +12,7 @@ export interface RepoIssues {
 export interface Issue {
   title: string;
   url: string;
-  date: Date;
+  date: string;
   labels: Label[];
 }
 

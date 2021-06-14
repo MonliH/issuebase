@@ -1,6 +1,4 @@
 import Head from "next/head";
-import { useEffect } from "react";
-import getTopicIssues from "@lib/api/getTopicIssues";
 
 import styles from "@styles/Home.module.css";
 import { ActiveTopic, TopicIssues } from "@lib/api/getTopicIssues";
@@ -31,7 +29,9 @@ export default function Home({
 
       <main className={styles.mainLayout}>
         <Sidebar topics={topics} active={active} />
-        <Issues issues={issues} />
+        <div className={styles.scrollable}>
+          <Issues issues={issues} />
+        </div>
       </main>
     </div>
   );
