@@ -1,6 +1,10 @@
 import API_DOMAIN from "@lib/api/API_DOMAIN";
 
-export type TopicIssues = RepoIssues[];
+export interface TopicIssues {
+  issues: RepoIssues[];
+  issues_scanned: number;
+  issues_found: number;
+}
 
 export interface RepoIssues {
   issues: Issue[];

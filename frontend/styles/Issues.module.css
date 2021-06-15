@@ -22,7 +22,9 @@
 }
 
 .container {
-  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   margin-bottom: 30px;
 }
@@ -37,10 +39,19 @@
 .margin {
   margin-top: 10vh;
   margin-left: 50px;
+  padding-right: 50px;
   display: flex;
   flex-direction: column;
+  width: calc(100% - 50px);
 }
 
 .projectName {
   margin-top: 4px;
+}
+
+.issuesScanned {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #70757a;
+  width: 100%;
 }
