@@ -67,7 +67,7 @@ async fn good_issues<'a>(
     repo: &str,
     repo_info: Option<GithubRepo>,
     flags: &[Cow<'a, String>],
-) -> Result<Option<Issues>, Status> {
+) -> Result<Option<(Issues, usize)>, Status> {
     let info: GithubRepo = if let Some(info) = repo_info {
         info
     } else {
@@ -98,12 +98,12 @@ async fn good_issues<'a>(
         return Ok(None);
     }
 
-    Ok(Some(Issues {
+    Ok(Some((Issues {
         issues,
         repo_name: repo.to_string(),
         stars: info.stargazers_count,
         description: info.description,
-    }))
+    }, info.open_issues_count)))
 }
 
 async fn get_org_repos(client: &Client, org: &str) -> Result<Vec<GithubRepo>, Status> {
@@ -113,21 +113,27 @@ async fn get_org_repos(client: &Client, org: &str) -> Result<Vec<GithubRepo>, St
         .send()
         .await
         .map_err(|_| Status::InternalServerError)?;
-    let mut link =
-        parse_link_header::parse(res.headers().get(LINK).unwrap().to_str().unwrap()).unwrap();
+    let mut link = if let Some(link) = res.headers().get(LINK) {
+
+        Some(parse_link_header::parse(
+                        link.to_str()
+            .unwrap())
+        .unwrap())
+    } else {None};
     let mut repos: Vec<GithubRepo> = res.json().await.map_err(|_| Status::InternalServerError)?;
     repos = repos
         .into_iter()
         .filter(|r| r.open_issues_count != 0)
         .collect();
-    while let Some(url) = link.get_mut(&Some("next".to_string())) {
+    while let Some(Some(url)) = link.as_mut().map(|l| l.get_mut(&Some("next".to_string()))) {
         let res = client
             .get(mem::take(&mut url.raw_uri))
             .send()
             .await
             .map_err(|_| Status::InternalServerError)?;
-        link =
-            parse_link_header::parse(res.headers().get(LINK).unwrap().to_str().unwrap()).unwrap();
+        if let Some(l) = res.headers().get(LINK) {
+        link = Some(parse_link_header::parse(l.to_str().unwrap()).unwrap());
+        }
         let more_repos: Vec<GithubRepo> =
             res.json().await.map_err(|_| Status::InternalServerError)?;
         repos.extend(more_repos.into_iter().filter(|r| r.open_issues_count != 0));
@@ -139,7 +145,7 @@ pub async fn good_github_issues(
     repos: &[String],
     orgs: &[String],
     flags: &HashMap<String, Vec<String>>,
-) -> Result<Vec<Issues>, Status> {
+) -> Result<GithubIssuesResponse, Status> {
     let mut headers = HeaderMap::new();
     let mut auth_value = HeaderValue::from_static(&*GITHUB_API_KEY);
     auth_value.set_sensitive(true);
@@ -154,17 +160,19 @@ pub async fn good_github_issues(
     // Allocate a single buffer used for flags in each repo
     let mut flags_buf: Vec<Cow<String>> = Vec::new();
 
-    let mut all_repos: Vec<(Cow<String>, Option<GithubRepo>)> = Vec::new();
-    all_repos.extend(repos.iter().map(|r| (Cow::Borrowed(r), None)));
+    let mut all_repos: Vec<(Cow<String>, Option<GithubRepo>, Option<&str>)> = Vec::new();
+    all_repos.extend(repos.iter().map(|r| (Cow::Borrowed(r), None, None)));
     for org in orgs {
         for mut repo in get_org_repos(&client, org).await? {
-            all_repos.push((Cow::Owned(mem::take(&mut repo.full_name)), Some(repo)));
+            all_repos.push((Cow::Owned(mem::take(&mut repo.full_name)), Some(repo), Some(org)));
         }
     }
 
     let mut all_issues = Vec::new();
+    let mut issues_scanned = 0;
+    let mut issues_found = 0;
 
-    for (repo, prev_info) in all_repos {
+    for (repo, prev_info, org) in all_repos {
         if let Some(repo_flags) = flags.get(repo.as_ref()) {
             flags_buf.extend(repo_flags.iter().map(|s| Cow::Borrowed(s)));
         } else {
@@ -175,8 +183,14 @@ pub async fn good_github_issues(
             }
         }
 
-        if let Some(issues) = good_issues(&client, &repo, prev_info, &flags_buf).await? {
+        if let Some(Some(org_flags)) = org.map(|o| flags.get(o)) {
+            flags_buf.extend(org_flags.iter().map(|s| Cow::Borrowed(s)));
+        }
+
+        if let Some((issues, total)) = good_issues(&client, &repo, prev_info, &flags_buf).await? {
+            issues_found += issues.issues.len();
             all_issues.push(issues);
+            issues_scanned += total;
         }
 
         // Resuse the allocated buffer by removing the added elements
@@ -187,7 +201,7 @@ pub async fn good_github_issues(
     // sort repos by most stars
     all_issues.sort_by_key(|proj| Reverse(proj.stars));
 
-    Ok(all_issues)
+    Ok(GithubIssuesResponse { issues: all_issues, issues_scanned, issues_found })
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -204,4 +218,11 @@ pub struct Issue {
     url: String,
     date: chrono::DateTime<Utc>,
     labels: Vec<GithubLabel>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GithubIssuesResponse {
+    issues: Vec<Issues>,
+    issues_scanned: usize,
+    issues_found: usize,
 }

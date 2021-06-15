@@ -8,7 +8,7 @@ pub mod get_issues;
 pub mod github_api;
 pub mod projects;
 
-use github_api::Issues;
+use github_api::GithubIssuesResponse;
 use projects::{MinimalGroup, Projects};
 use rocket::serde::json::Json;
 use std::sync::Arc;
@@ -24,7 +24,7 @@ const ISSUES_KEY: &'static str = "issues";
 async fn main() {
     let cache = Arc::new(
         cache::Cache::read_from_file(ISSUES_KEY)
-            .unwrap_or_else(|| cache::Cache::<(String, usize), Vec<Issues>>::new()),
+            .unwrap_or_else(|| cache::Cache::<(String, usize), GithubIssuesResponse>::new()),
     );
     rocket::build()
         .manage(Arc::clone(&cache))

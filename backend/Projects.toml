@@ -1,39 +1,103 @@
+# ------
 [rust]
 name = "Rust"
 id = "rust"
 
 [[rust.groups]]
 id = "rust-official"
-name = "Official Rust Repositories"
+name = "official rust repositories"
 repos = []
 orgs = ["rust-lang"]
 flags = { "*" = ["good first issue"], "rust-lang" = ["E-easy"] }
 
 [[rust.groups]]
-id = "notable-projects"
-name = "Notable Rust repositories"
+id = "notable-web"
+name = "notable web/networking rust repositories"
 repos = [
-    "hecrj/iced",
     "seanmonstar/reqwest",
-    "tokio-rs/tokio",
-    "serde-rs/serde",
-    "rust-random/rand",
-    "bitflags/bitflags",
     "serenity-rs/serenity",
-    "async-rs/async-std",
-    "smol-rs/smol",
     "denoland/deno",
-    "alacritty/alacritty",
     "servo/servo",
     "tauri-apps/tauri",
     "actix/actix-web",
-    "bevyengine/bevy",
     "hyperium/hyper",
+    "yewstack/yew",
+    "meilisearch/MeiliSearch",
+    "valeriansaliou/sonic",
+    "swc-project/swc",
+    "wasmerio/wasmer",
+    "diesel-rs/diesel",
 ]
 orgs = []
 [rust.groups.flags]
 "*" = ["good first issue"]
 "servo/servo" = ["E-easy"]
+"swc-project/swc" = ["E-easy"]
+"actix/actix-web" = ["good-first-issue"]
+"wasmerio/wasmer" = ["🥇 good first issue"]
+
+[[rust.groups]]
+id = "notable-general"
+name = "notable general rust repositories"
+repos = [
+    "hecrj/iced",
+    "tokio-rs/tokio",
+    "serde-rs/serde",
+    "rust-random/rand",
+    "bitflags/bitflags",
+    "async-rs/async-std",
+    "smol-rs/smol",
+    "sharkdp/fd",
+    "starship/starship",
+    "xi-editor/xi-editor",
+    "alacritty/alacritty",
+    "bevyengine/bevy",
+    "sharkdp/bat",
+    "nushell/nushell",
+    "amethyst/amethyst",
+]
+orgs = []
+[rust.groups.flags]
+"*" = ["good first issue"]
 "tokio-rs/tokio" = ["E-easy"]
 "alacritty/alacritty" = ["D - easy"]
-"actix/actix-web" = ["good-first-issue"]
+"starship/starship" = ["🌱 good first issue"]
+"xi-editor/xi-editor" = ["easy"]
+"amethyst/amethyst" = ["diff: easy"]
+
+# ------
+
+[python]
+name = "Python"
+id = "python"
+
+[[python.groups]]
+id = "python-official"
+name = "official python repositories"
+repos = []
+orgs = ["python"]
+flags = { "*" = ["good first issue", "good-first-issue"] }
+
+[[python.groups]]
+id = "notable-projects"
+name = "notable python repositories"
+repos = [
+    "tensorflow/tensorflow",
+    "pallets/flask",
+    "keras-team/keras",
+    "httpie/httpie",
+    "pytorch/pytorch",
+    "ansible/ansible",
+    "scikit-learn/scikit-learn",
+    "scrapy/scrapy",
+    "3b1b/manim",
+    "tiangolo/fastapi",
+    "getsentry/sentry",
+    "pandas-dev/pandas",
+]
+orgs = []
+[python.groups.flags]
+"*" = ["good first issue"]
+"keras-team/keras" = ["Good first issue"]
+"ansible/ansible" = ["easyfix"]
+"getsentry/sentry" = ["Easy Task"]

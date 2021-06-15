@@ -5,9 +5,10 @@ use chrono::Duration;
 use dotenv::dotenv;
 use rocket::{http::Status, serde::json::Json, State};
 
+use crate::github_api::GithubIssuesResponse;
 use crate::{
     cache::Cache,
-    github_api::{good_github_issues, Issues},
+    github_api::good_github_issues,
     projects,
 };
 
@@ -27,8 +28,8 @@ lazy_static! {
 pub async fn get_issues(
     language: String,
     category: usize,
-    issues_cache: &State<Arc<Cache<(String, usize), Vec<Issues>>>>,
-) -> Result<Json<Vec<Issues>>, Status> {
+    issues_cache: &State<Arc<Cache<(String, usize), GithubIssuesResponse>>>,
+) -> Result<Json<GithubIssuesResponse>, Status> {
     if let Some(c) = issues_cache
         .get(&(language.clone(), category), *ISSUE_REGEN)
         .await
