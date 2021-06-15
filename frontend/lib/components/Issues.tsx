@@ -47,7 +47,7 @@ export default function Issues({
       to: { left: 20 },
     });
     return (
-      <div className={styles.container}>
+      <div className={styles.unselectedContainerOuter}>
         <a.div className={styles.unselectedContainer} style={props}>
           <AArrowLeft className={styles.arrow} style={props} />
           <span className={styles.titleSelect}>start by selecting a topic</span>
