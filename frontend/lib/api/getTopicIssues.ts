@@ -1,4 +1,4 @@
-import API_DOMAIN from "@lib/api/API_DOMAIN";
+import getApiDomain from "@lib/api/API_DOMAIN";
 
 export interface TopicIssues {
   issues: RepoIssues[];
@@ -33,8 +33,8 @@ export interface ActiveTopic {
 export default async function getTopicIssues({
   language,
   categoryIdx,
-}: ActiveTopic): Promise<TopicIssues> {
-  const res = await fetch(`${API_DOMAIN}/issues/${language}/${categoryIdx}`);
+}: ActiveTopic, backend_ip: string | undefined): Promise<TopicIssues> {
+  const res = await fetch(`${getApiDomain(backend_ip)}/issues/${language}/${categoryIdx}`);
   const issues = await res.json();
   return issues;
 }

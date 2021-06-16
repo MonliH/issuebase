@@ -1,4 +1,4 @@
-import API_DOMAIN from "@lib/api/API_DOMAIN";
+import getApiDomain from "@lib/api/API_DOMAIN";
 
 export type Projects = Record<string, Language>;
 
@@ -13,8 +13,8 @@ export interface Group {
   name: string
 }
 
-export default async function getTopics(): Promise<Projects> {
-  const res = await fetch(`${API_DOMAIN}/projects`);
+export default async function getTopics(backend_ip: string | undefined): Promise<Projects> {
+  const res = await fetch(`${getApiDomain(backend_ip)}/projects`);
   const topics = await res.json();
   return topics;
 }
