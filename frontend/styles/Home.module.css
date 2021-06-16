@@ -14,3 +14,17 @@
   overflow: auto;
   flex-grow: 1;
 }
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.loading {
+    margin-bottom: 30px;
+}

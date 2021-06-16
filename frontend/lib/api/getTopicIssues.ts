@@ -30,11 +30,17 @@ export interface ActiveTopic {
   categoryIdx: number;
 }
 
-export default async function getTopicIssues({
-  language,
-  categoryIdx,
-}: ActiveTopic, backend_ip: string | undefined): Promise<TopicIssues> {
-  const res = await fetch(`${getApiDomain(backend_ip)}/issues/${language}/${categoryIdx}`);
-  const issues = await res.json();
-  return issues;
+export default async function getTopicIssues(
+  { language, categoryIdx }: ActiveTopic,
+  backend_ip: string | undefined
+): Promise<TopicIssues | null> {
+  const res = await fetch(
+    `${getApiDomain(backend_ip)}/issues/${language}/${categoryIdx}`
+  );
+  try {
+    const issues = await res.json();
+    return issues;
+  } catch (e) {
+    return null;
+  }
 }
