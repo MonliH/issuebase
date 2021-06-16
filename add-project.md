@@ -4,7 +4,7 @@ All the configuration of projects are done through the [`Projects.toml`](./backe
 
 ### To add a toplevel language
 
-```toml
+```python
 [<language name>]
 name = "<display name>"
 id = "<language name>"
@@ -12,7 +12,7 @@ id = "<language name>"
 
 ### To add a group
 
-```toml
+```python
 [[<language name>.groups]]
 id = "group name"
 name = "group description"
@@ -24,7 +24,7 @@ orgs = [<orgs string, e.g. "rust-lang">...]
 
 Not all repos use `good first issue` as an indicator of an issue. Other examples that repos use include `E-easy` and `good-first-issue`.
 
-```toml
+```python
 [[<language name>.groups.flags]]
 <repo name> = [<labels>]
 ```
