@@ -53,9 +53,9 @@ export default function Issues({
           <span className={styles.titleSelect}>start by selecting a topic</span>
         </a.div>
         <div className={styles.fit}>
-          <div className={styles.bigTitle}>Welcome to dev-contrib!</div>
+          <div className={styles.bigTitle}>Welcome to issuebase!</div>
           <div className={styles.description}>
-            dev-contrib is an easy way to get started contributing to real, cool, and popular projects. 
+            issuebase is an easy way to get started contributing to real, cool, and popular projects. 
             <br/><br/>
             It <b>shows all the issues friendly to first-time contributors</b> in various projects. 
           </div>

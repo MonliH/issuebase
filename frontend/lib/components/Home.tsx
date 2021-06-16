@@ -19,7 +19,7 @@ export default function Home({
   return (
     <div className={styles.container}>
       <Head>
-        <title>devcontrib</title>
+        <title>issuebase</title>
         <meta
           name="description"
           content="Fetch good first issues on lots of curated repositories on github"

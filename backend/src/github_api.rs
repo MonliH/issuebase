@@ -152,7 +152,7 @@ pub async fn good_github_issues(
     headers.insert(header::AUTHORIZATION, auth_value);
 
     let client = reqwest::Client::builder()
-        .user_agent("devcontrib")
+        .user_agent("issuebase")
         .default_headers(headers)
         .build()
         .unwrap();

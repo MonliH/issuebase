@@ -97,7 +97,7 @@ export default function Sidebar({
       })}
 
       <a
-        href="https://www.github.com/MonLiH/dev-contrib"
+        href="https://www.github.com/MonLiH/issuebase"
         target="_blank"
         rel="noopener noreferrer"
         className={styles.githubLink}
