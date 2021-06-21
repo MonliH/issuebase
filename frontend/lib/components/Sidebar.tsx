@@ -1,10 +1,10 @@
-import { useLayoutEffect, memo, useState, useRef, useEffect } from "react";
+import { memo, useState, useRef, useEffect } from "react";
 import { Menu, GitHub, ChevronRight, ChevronDown } from "react-feather";
 import Link from "next/link";
 
 import useMeasure from "react-use-measure";
 
-import { to, useSpring, animated } from "@react-spring/web";
+import { useSpring, animated } from "@react-spring/web";
 
 import styles from "@styles/Sidebar.module.css";
 import { ActiveTopic } from "@lib/api/getTopicIssues";
@@ -97,7 +97,7 @@ export default function Sidebar({
   }, [sidebarCollapse]);
 
   return (
-    mounted && (
+    (mounted && (
       <>
         <animated.div
           className={styles.container}
@@ -159,7 +159,7 @@ export default function Sidebar({
         />
         {sidebarCollapse ? <Hamburger onClick={() => setOpen(true)} /> : null}
       </>
-    )
+    )) || <></>
   );
 }
 
