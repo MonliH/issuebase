@@ -41,7 +41,7 @@ const Tree = memo<
   const Icon = isOpen ? ChevronDown : ChevronRight;
   return (
     <div className={styles.frame}>
-      <span onClick={() => setOpen(!isOpen)} className={styles.titleWhole}>
+      <button onClick={() => setOpen(!isOpen)} className={styles.titleWhole}>
         <Icon
           style={{
             width: "1em",
@@ -54,7 +54,7 @@ const Tree = memo<
         <span className={styles.title} style={style}>
           {name}
         </span>
-      </span>
+      </button>
       <animated.div
         className={styles.content}
         style={{
@@ -62,7 +62,9 @@ const Tree = memo<
           height: isOpen && previous === isOpen ? "auto" : height,
         }}
       >
-        <animated.div ref={ref} style={{ y }} children={children} />
+        <animated.div ref={ref} style={{ y }}>
+          {children}
+        </animated.div>
       </animated.div>
     </div>
   );

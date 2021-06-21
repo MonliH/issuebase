@@ -65,6 +65,9 @@
 
 .titleWhole {
   cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
 }
 
 .githubLink {
