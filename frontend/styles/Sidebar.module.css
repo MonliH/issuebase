@@ -25,6 +25,8 @@
 }
 
 .container {
+  z-index: 10;
+  background-color: white;
   position: relative;
   min-height: 100vh;
   margin: 0;
@@ -42,9 +44,9 @@
 }
 
 @media (max-width: 1350px) {
-    .container {
-        padding-left: 25px;
-    }
+  .container {
+    padding-left: 25px;
+  }
 }
 
 .treeLink {
@@ -53,6 +55,8 @@
   line-height: 1.15;
   padding-top: 10px;
   transition: color 0.15s;
+  max-width: 150px;
+  word-wrap: break-word;
 }
 
 .treeLink:hover {
@@ -78,4 +82,35 @@
   height: auto;
   margin-bottom: -5px;
   stroke-width: 2px;
+}
+
+.floatingMenu {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+
+  backdrop-filter: blur(5px);
+  z-index: 5;
+
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 3px;
+  padding-bottom: 0;
+  border: 1px solid #808080;
+  border-radius: 3px;
+}
+
+.menuDarken {
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  display: none;
+}
+
+@media (max-width: 590px) {
+  .menuDarken {
+    display: block;
+    position: absolute;
+  }
 }

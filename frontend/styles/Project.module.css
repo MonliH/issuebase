@@ -74,7 +74,19 @@
 }
 
 @media (max-width: 1460px) {
-    .cardContainer {
-        column-count: 3;
-    }
+  .cardContainer {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 950px) {
+  .cardContainer {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .cardContainer {
+    column-count: 1;
+  }
 }

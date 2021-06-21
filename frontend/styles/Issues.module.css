@@ -51,6 +51,14 @@
   width: calc(100% - 50px);
 }
 
+@media (max-width: 700px) {
+  .margin {
+    margin-left: 15px;
+    padding-right: 10px;
+    width: calc(100% - 10px);
+  }
+}
+
 .projectName {
   margin-top: 4px;
 }
@@ -75,5 +83,5 @@
 }
 
 .fit {
-    width: 550px;
+  width: 550px;
 }

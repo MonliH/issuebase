@@ -59,7 +59,7 @@ export default function Issues({
     return (
       <div className={styles.unselectedContainerOuter}>
         <a.div className={styles.unselectedContainer} style={props}>
-          {showArrow ? (
+          {showArrow && (typeof document !== "undefined") ? (
             <>
               <AArrowLeft className={styles.arrow} style={props} />
               <span className={styles.titleSelect}>
