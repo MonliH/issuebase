@@ -1,4 +1,4 @@
-import { memo, useState, useRef, useEffect } from "react";
+import { useLayoutEffect, memo, useState, useRef, useEffect } from "react";
 import { Menu, GitHub, ChevronRight, ChevronDown } from "react-feather";
 import Link from "next/link";
 
@@ -88,7 +88,7 @@ export default function Sidebar({
   });
   const { opacity } = useSpring({ opacity: open ? 1 : 0 });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setMounted(true);
   }, []);
 
