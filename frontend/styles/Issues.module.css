@@ -35,6 +35,12 @@
   position: relative;
 }
 
+@media (max-width: 865px) {
+  .fit {
+    padding-left: 30px;
+  }
+}
+
 .unselectedContainer {
   position: absolute;
   left: 20px;

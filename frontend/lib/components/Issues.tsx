@@ -1,13 +1,8 @@
-import { useMemo, useRef, useLayoutEffect } from "react";
-import { ArrowLeft } from "react-feather";
-import { useSpring, a } from "@react-spring/web";
+import { useRef, useLayoutEffect } from "react";
 
 import { TopicIssues } from "@lib/api/getTopicIssues";
 import Project from "@lib/components/Project";
 import styles from "@styles/Issues.module.css";
-import { hasVisited, setVisited } from "@lib/hasVisited";
-
-const AArrowLeft = a(ArrowLeft);
 
 const AlwaysScrollTo = () => {
   const elementRef = useRef<HTMLDivElement | null>(null);
@@ -42,32 +37,8 @@ export default function Issues({
       </>
     );
   } else {
-    const props = useSpring({
-      loop: { reverse: true },
-      from: { left: 30 },
-      to: { left: 20 },
-    });
-
-    const showArrow = useMemo(() => {
-      const showArrow = !hasVisited();
-      if (showArrow) {
-        setVisited();
-      }
-      return showArrow;
-    }, []);
-
     return (
       <div className={styles.unselectedContainerOuter}>
-        <a.div className={styles.unselectedContainer} style={props}>
-          {showArrow && (typeof document !== "undefined") ? (
-            <>
-              <AArrowLeft className={styles.arrow} style={props} />
-              <span className={styles.titleSelect}>
-                start by selecting a topic
-              </span>
-            </>
-          ) : null}
-        </a.div>
         <div className={styles.fit}>
           <div className={styles.bigTitle}>Welcome to issuebase!</div>
           <div className={styles.description}>
