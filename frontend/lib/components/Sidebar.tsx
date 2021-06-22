@@ -1,4 +1,4 @@
-import { useLayoutEffect, memo, useState, useRef, useEffect } from "react";
+import { memo, useState, useRef, useEffect } from "react";
 import { Menu, GitHub, ChevronRight, ChevronDown } from "react-feather";
 import Link from "next/link";
 
@@ -24,21 +24,26 @@ const Tree = memo<
     name: string | JSX.Element;
   }
 >(({ children, name, style, defaultOpen = false }) => {
+  const [first, setFirst] = useState(true);
   const [isOpen, setOpen] = usePersistedState(
     `dev_contrib_${name}_open`,
     defaultOpen
   );
-  const previous = usePrevious(isOpen);
+  const open = !first && isOpen;
+  const previous = usePrevious(open);
   const [ref, { height: viewHeight }] = useMeasure();
   const { height, opacity, y } = useSpring({
     from: { height: 0, opacity: 0, y: 0 },
     to: {
-      height: isOpen ? viewHeight : 0,
-      opacity: isOpen ? 1 : 0,
-      y: isOpen ? 0 : 20,
+      height: open ? viewHeight : 0,
+      opacity: open ? 1 : 0,
+      y: open ? 0 : 20,
     },
   });
-  const Icon = isOpen ? ChevronDown : ChevronRight;
+  const Icon = open ? ChevronDown : ChevronRight;
+  useEffect(() => {
+    setFirst(false);
+  }, []);
   return (
     <div className={styles.frame}>
       <button onClick={() => setOpen(!isOpen)} className={styles.titleWhole}>
@@ -59,7 +64,7 @@ const Tree = memo<
         className={styles.content}
         style={{
           opacity,
-          height: isOpen && previous === isOpen ? "auto" : height,
+          height: open && previous === open ? "auto" : height,
         }}
       >
         <animated.div ref={ref} style={{ y }}>
@@ -80,17 +85,12 @@ export default function Sidebar({
   const width = useWindowWidth();
   const sidebarCollapse = width < 590;
   const [open, setOpen] = useState(() => false);
-  const [mounted, setMounted] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(0);
 
   const props = useSpring({
     translateX: open ? 0 : -(sidebarWidth === 0 ? 590 : sidebarWidth),
   });
   const { opacity } = useSpring({ opacity: open ? 1 : 0 });
-
-  useLayoutEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!sidebarCollapse) {
@@ -99,69 +99,65 @@ export default function Sidebar({
   }, [sidebarCollapse]);
 
   return (
-    (mounted && (
-      <>
-        <animated.div
-          className={styles.container}
-          ref={(el) => {
-            if (el) {
-              setSidebarWidth(el.offsetWidth);
-            }
-          }}
-          style={sidebarCollapse ? { position: "fixed", ...props } : {}}
+    <>
+      <animated.div
+        className={styles.container}
+        ref={(el) => {
+          if (el) {
+            setSidebarWidth(el.offsetWidth);
+          }
+        }}
+        style={sidebarCollapse ? { position: "fixed", ...props } : {}}
+      >
+        {Object.values(topics).map(
+          ({ name: langDisp, id: language, groups }) => {
+            return (
+              <Tree name={langDisp} key={language}>
+                {groups.map(({ id: groupId }, idx) => {
+                  let style = {};
+                  if (
+                    active?.language == language &&
+                    active?.categoryIdx == idx
+                  ) {
+                    style = { fontWeight: "bold" };
+                  }
+
+                  return (
+                    <Link
+                      href={`/${language}/${idx}`}
+                      passHref={true}
+                      key={groupId}
+                    >
+                      <a className={styles.treeLink} style={style}>
+                        {groupId}
+                      </a>
+                    </Link>
+                  );
+                })}
+              </Tree>
+            );
+          }
+        )}
+
+        <a
+          href="https://www.github.com/MonLiH/issuebase"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.githubLink}
         >
-          {Object.values(topics).map(
-            ({ name: langDisp, id: language, groups }) => {
-              return (
-                <Tree name={langDisp} key={language}>
-                  {groups.map(({ id: groupId }, idx) => {
-                    let style = {};
-                    if (
-                      active?.language == language &&
-                      active?.categoryIdx == idx
-                    ) {
-                      style = { fontWeight: "bold" };
-                    }
-
-                    return (
-                      <Link
-                        href={`/${language}/${idx}`}
-                        passHref={true}
-                        key={groupId}
-                      >
-                        <a className={styles.treeLink} style={style}>
-                          {groupId}
-                        </a>
-                      </Link>
-                    );
-                  })}
-                </Tree>
-              );
-            }
-          )}
-
-          <a
-            href="https://www.github.com/MonLiH/issuebase"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.githubLink}
-          >
-            <GitHub className={styles.logo} /> star on github
-          </a>
-        </animated.div>
-        <animated.div
-          onClick={() => setOpen(false)}
-          className={styles.menuDarken}
-          style={{
-            opacity,
-            display: opacity.to((opacity) =>
-              opacity === 0 ? "none" : "block"
-            ),
-          }}
-        />
-        {sidebarCollapse ? <Hamburger onClick={() => setOpen(true)} /> : null}
-      </>
-    )) || <></>
+          <GitHub className={styles.logo} /> star on github
+        </a>
+      </animated.div>
+      <animated.div
+        onClick={() => setOpen(false)}
+        className={styles.menuDarken}
+        style={{
+          opacity,
+          display: opacity.to((opacity) => (opacity === 0 ? "none" : "block")),
+        }}
+      />
+      {sidebarCollapse ? <Hamburger onClick={() => setOpen(true)} /> : null}
+    </>
   );
 }
 

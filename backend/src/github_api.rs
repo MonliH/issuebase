@@ -1,5 +1,5 @@
 use std::borrow::Cow;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::env;
 use std::mem;
 use std::cmp::Reverse;
@@ -41,6 +41,7 @@ struct GithubIssue {
     created_at: DateTime<Utc>,
     assignee: Option<Empty>,
     labels: Vec<GithubLabel>,
+    id: usize,
 }
 
 #[derive(Deserialize, Clone, Serialize, Debug)]
@@ -79,19 +80,21 @@ async fn good_issues<'a>(
     }
 
     let mut issues = Vec::new();
+    let mut isssue_ids = HashSet::new();
     for flag in flags {
-        let res: GithubIssues = get_json(
+        let mut res: GithubIssues = get_json(
             client
                 .get(format!("{}repos/{}/issues", API_URL, repo))
                 .query(&[("sort", "created"), ("labels", flag)]),
         )
         .await?;
-        issues.extend(res.0.into_iter().map(|i| Issue {
-            title: i.title,
-            url: i.html_url,
+        issues.extend(res.0.iter_mut().filter(|i| !isssue_ids.contains(&i.id)).map(|i| Issue {
+            title: mem::take(&mut i.title),
+            url: mem::take(&mut i.html_url),
             date: i.created_at,
-            labels: i.labels,
+            labels: mem::take(&mut i.labels),
         }));
+        isssue_ids.extend(res.0.iter().map(|i| i.id));
     }
 
     if issues.is_empty() {
