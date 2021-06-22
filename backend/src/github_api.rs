@@ -39,7 +39,6 @@ struct GithubIssue {
     html_url: String,
     title: String,
     created_at: DateTime<Utc>,
-    assignee: Option<Empty>,
     labels: Vec<GithubLabel>,
     id: usize,
 }
@@ -82,19 +81,31 @@ async fn good_issues<'a>(
     let mut issues = Vec::new();
     let mut isssue_ids = HashSet::new();
     for flag in flags {
-        let mut res: GithubIssues = get_json(
-            client
-                .get(format!("{}repos/{}/issues", API_URL, repo))
-                .query(&[("sort", "created"), ("labels", flag)]),
-        )
-        .await?;
-        issues.extend(res.0.iter_mut().filter(|i| !isssue_ids.contains(&i.id)).map(|i| Issue {
-            title: mem::take(&mut i.title),
-            url: mem::take(&mut i.html_url),
-            date: i.created_at,
-            labels: mem::take(&mut i.labels),
-        }));
-        isssue_ids.extend(res.0.iter().map(|i| i.id));
+        let mut url = format!("{}repos/{}/issues", API_URL, repo);
+        loop {
+            let res = client
+                .get(mem::take(&mut url))
+                .query(&[("sort", "created"), ("labels", flag), ("per_page", "100"), ("assignee", "none")]).send().await.map_err(|_| Status::InternalServerError)?;
+            let mut link = if let Some(link) = res.headers().get(LINK) {
+                Some(parse_link_header::parse(
+                                link.to_str()
+                    .unwrap())
+                .unwrap())
+            } else {None};
+
+            let mut is: GithubIssues = res.json().await.map_err(|_| Status::InternalServerError)?;
+            issues.extend(is.0.iter_mut().filter(|i| !isssue_ids.contains(&i.id)).map(|i| Issue {
+                title: mem::take(&mut i.title),
+                url: mem::take(&mut i.html_url),
+                date: i.created_at,
+                labels: mem::take(&mut i.labels),
+            }));
+            isssue_ids.extend(is.0.iter().map(|i| i.id));
+
+            if let Some(Some(u)) = link.as_mut().map(|l| l.get_mut(&Some("next".to_string()))) {
+                url = mem::take(&mut u.raw_uri);
+            } else {break}
+        }
     }
 
     if issues.is_empty() {
@@ -117,12 +128,12 @@ async fn get_org_repos(client: &Client, org: &str) -> Result<Vec<GithubRepo>, St
         .await
         .map_err(|_| Status::InternalServerError)?;
     let mut link = if let Some(link) = res.headers().get(LINK) {
-
         Some(parse_link_header::parse(
                         link.to_str()
             .unwrap())
         .unwrap())
     } else {None};
+
     let mut repos: Vec<GithubRepo> = res.json().await.map_err(|_| Status::InternalServerError)?;
     repos = repos
         .into_iter()
@@ -135,7 +146,7 @@ async fn get_org_repos(client: &Client, org: &str) -> Result<Vec<GithubRepo>, St
             .await
             .map_err(|_| Status::InternalServerError)?;
         if let Some(l) = res.headers().get(LINK) {
-        link = Some(parse_link_header::parse(l.to_str().unwrap()).unwrap());
+            link = Some(parse_link_header::parse(l.to_str().unwrap()).unwrap());
         }
         let more_repos: Vec<GithubRepo> =
             res.json().await.map_err(|_| Status::InternalServerError)?;
