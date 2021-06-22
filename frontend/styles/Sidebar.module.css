@@ -49,6 +49,12 @@
   }
 }
 
+@media (max-width: 590px) {
+  .container {
+    position: fixed;
+  }
+}
+
 .treeLink {
   display: block;
   font-size: 15px;

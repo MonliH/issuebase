@@ -107,7 +107,7 @@ export default function Sidebar({
             setSidebarWidth(el.offsetWidth);
           }
         }}
-        style={sidebarCollapse ? { position: "fixed", ...props } : {}}
+        style={sidebarCollapse ? props : {}}
       >
         {Object.values(topics).map(
           ({ name: langDisp, id: language, groups }) => {
