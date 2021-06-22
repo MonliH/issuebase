@@ -1,4 +1,4 @@
-// regenerate every 10 seconds
-// note that the backend only revalidates the cache once every 15 minutes,
+// regeneration time
+// note that the backend has it's own cache revalidation time (many minutes),
 // so the issue status won't actualy update that often.
-export default 10;
+export default 15;
