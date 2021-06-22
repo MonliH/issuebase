@@ -52,6 +52,7 @@
 @media (max-width: 590px) {
   .container {
     position: fixed;
+    display: none;
   }
 }
 

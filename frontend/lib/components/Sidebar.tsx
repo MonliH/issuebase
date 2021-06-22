@@ -107,7 +107,11 @@ export default function Sidebar({
             setSidebarWidth(el.offsetWidth);
           }
         }}
-        style={sidebarCollapse ? props : {}}
+        style={
+          sidebarCollapse
+            ? { display: "block", ...props }
+            : { display: "block" }
+        }
       >
         {Object.values(topics).map(
           ({ name: langDisp, id: language, groups }) => {
