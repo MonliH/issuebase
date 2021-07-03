@@ -8,7 +8,7 @@ export default function Layout({ children }: { children?: ReactNode }) {
         <title>issuebase</title>
         <meta
           name="description"
-          content="Fetch good first issues on lots of curated repositories on github"
+          content="Get good first issues from curated repositories on github"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
