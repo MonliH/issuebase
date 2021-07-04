@@ -101,3 +101,36 @@ orgs = []
 "keras-team/keras" = ["Good first issue"]
 "ansible/ansible" = ["easyfix"]
 "getsentry/sentry" = ["Easy Task"]
+
+# -----
+
+[c]
+name = "C"
+id = "c"
+
+[[c.groups]]
+id = "notable-projects"
+name = "notable c projects"
+orgs = []
+repos = [
+    "Genymobile/scrcpy",
+    "neovim/neovim",
+    "obsproject/obs-studio",
+    "microsoft/vcpkg",
+    "CoatiSoftware/Sourcetrail",
+    "glfw/glfw",
+    "borgbackup/borg",
+    "raysan5/raylib",
+    "qmk/qmk_firmware",
+    "lvgl/lvgl",
+    "tree-sitter/tree-sitter",
+    "emscripten-core/emscripten",
+    "netdata/netdata"
+]
+
+[c.groups.flags]
+"*" = ["good first issue"]
+"obsproject/obs-studio" = ["Good first issue"]
+"microsoft/vcpkg" = ["info:good-first-issue"]
+"tree-sitter/tree-sitter" = ["good-starting-pr"]
+"emscripten-core/emscripten" = ["good first bug"]
