@@ -156,7 +156,16 @@ repos = [
     "grafana/grafana",
     "nestjs/nest",
     "mermaid-js/mermaid",
-    "strapi/strapi"
+    "strapi/strapi",
+    "caddyserver/caddy",
+    "meteor/meteor",
+    "scrapy/scrapy",
+    "hoppscotch/hoppscotch",
+    "JuliaLang/julia",
+    "x64dbg/x64dbg",
+    "facebook/docusaurus",
+    "sharkdp/bat",
+    "sherlock-project/sherlock"
 ]
 
 [hacktoberfest.groups.flags]
