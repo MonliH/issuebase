@@ -134,3 +134,38 @@ repos = [
 "microsoft/vcpkg" = ["info:good-first-issue"]
 "tree-sitter/tree-sitter" = ["good-starting-pr"]
 "emscripten-core/emscripten" = ["good first bug"]
+
+[hacktoberfest]
+name = "Hacktoberfest"
+id = "hacktoberfest"
+
+[[hacktoberfest.groups]]
+id = "notable-projects"
+name = "notable hacktoberfest projects"
+orgs = []
+repos = [
+    "ohmyzsh/ohmyzsh",
+    "axios/axios",
+    "mui/material-ui",
+    "storybookjs/storybook",
+    "huggingface/transformers",
+    "gohugoio/hugo",
+    "chartjs/Chart.js",
+    "ansible/ansible",
+    "tauri-apps/tauri",
+    "grafana/grafana",
+    "nestjs/nest",
+    "mermaid-js/mermaid",
+    "strapi/strapi"
+]
+
+[hacktoberfest.groups.flags]
+"*" = ["good first issue"]
+"ohmyzsh/ohmyzsh" = ["Good first issue"]
+"axios/axios" = ["beginner"]
+"huggingface/transformers" = ["Good First Issue"]
+"gohugoio/hugo" = ["GoodFirstIssue"]
+"chartjs/Chart.js" = ["type: documentation"]
+"ansible/ansible" = ["easyfix"]
+"nestjs/nest" = ["good first issue 👍"]
+"mermaid-js/mermaid" = ["Good first issue!"]
