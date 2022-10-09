@@ -178,3 +178,27 @@ repos = [
 "ansible/ansible" = ["easyfix"]
 "nestjs/nest" = ["good first issue 👍"]
 "mermaid-js/mermaid" = ["Good first issue!"]
+
+[javascript]
+name = "Javascript"
+id = "javascript"
+
+[[javascript.groups]]
+id = "notable-projects"
+name = "notable javascript projects"
+orgs = []
+repos = [
+    "nodejs/node",
+    "denoland/deno",
+    "microsoft/TypeScript",
+    "angular/angular",
+    "mui/material-ui",
+    "storybookjs/storybook",
+    "vuejs/vue",
+    "facebook/react",
+    "twbs/bootstrap",
+]
+
+[javascript.groups.flags]
+"*" = ["good first issue"]
+"microsoft/TypeScript" = ["Good First Issue"]
